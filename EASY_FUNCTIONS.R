@@ -30,7 +30,7 @@ GRAPHICS  <- function(){source(paste0(dirFol,"/GRAPHICS.R"))}
 #Years of analisys
 
 #Para Tolima
-YStart    <- 2007 #Star Year for analisys
+YStart    <- 2008 #Star Year for analisys
 YEnd      <- 2015 #End  Year for analisys
 
                                   ########  ########  ######   #### ##    ## 
@@ -91,7 +91,7 @@ SUMMARY(dirFol,"RHUM",YStart,YEnd)
 
 #You can use DontUse vector for exclude positions of the stations that you don't will use
 #eg: DontUse=c(2,4,9)
-YStart <- 2010
+YStart <- 2008
 YEnd   <- 2015
 GENERATOR_T_R(dirFol, YStart, YEnd, DontUse=2)
 #length(DontUse)
