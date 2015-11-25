@@ -749,7 +749,7 @@ QCDAILY <- function(dirFol){
       lat=Latitudes[which(Latitudes$ID==ID),2]#Busca dentro del archivo, la latitud
       A=0.25;B=0.50 #constantes
       
-      Rs=ap(days,lat,extraT=NULL,A,B,sunshine)*(100/4.18)
+      Rs=ap(days=days, lat=lat, extraT=NULL, A=A, B=B, SSD=sunshine)*(100/4.18)
       ###SIRAD convierte a MJ, por lo que el factor de correccion (100/4.18) en para llevarlo a CCM2
       
       Data.all.filesNAFree[[i]]$Value=Rs
@@ -1178,6 +1178,7 @@ SUMMARY<-function(dirFol,objeto,YStart,YEnd){
 #################################################Imputacion de tmax tmin y rain
 GENERATOR_T_R<-function(dirFol,YStart,YEnd,DontUse=NULL){
   
+  options(warn=-1)
   print("Wait a moment please...")
   
   rutDestino2=paste0(dirFol,"/PROCESS/04_SERIES_DAILY_OK/")
@@ -1223,9 +1224,11 @@ GENERATOR_T_R<-function(dirFol,YStart,YEnd,DontUse=NULL){
                                                          Tn_all=tmin_1,
                                                          year_min=year_min,
                                                          year_max=year_max,
-                                                         p=1,n_GPCA_iteration=n_GPCA_iter,
+                                                         p=1,
+                                                         n_GPCA_iteration=n_GPCA_iter,
                                                          n_GPCA_iteration_residuals=n_GPCA_iteration_residuals,
-                                                         sample="monthly")
+                                                         sample="monthly",
+                                                         yearly=TRUE)
   
   #Use of measured and observed temperature as exogenous variables
   print("##########################################################################")
@@ -1237,7 +1240,7 @@ GENERATOR_T_R<-function(dirFol,YStart,YEnd,DontUse=NULL){
   
   print("Start process of filling gaps in Precipitation") 
   # Precipitation Generator (temperture enters as exogenous variable)
-  #fix(ComprehensivePrecipitationGenerator)
+  # fix(ComprehensivePrecipitationGenerator)
   generation00_prec <- ComprehensivePrecipitationGenerator(station=stationUSE,
                                                            prec_all=precipitation,
                                                            year_min=year_min,

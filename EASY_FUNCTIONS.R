@@ -23,14 +23,14 @@ library(ggplot2)
 library(RMAWGEN)
 library(utils)
 #Work directory
-dirFol    <- "//dapadfs/workspace_cluster_6/TRANSVERSAL_PROJECTS/MADR/COMPONENTE_2/CLIMA/SERIES_CLIMA_PROCESADO/Cundinamarca/Ubate/"
+dirFol    <- "//dapadfs/workspace_cluster_6/TRANSVERSAL_PROJECTS/MADR/COMPONENTE_2/ASBAMA/DATOS_PROCESADOS/_clima/IDEAM"
 setwd(dirFol)
 
 GRAPHICS  <- function(){source(paste0(dirFol,"/GRAPHICS.R"))}
 #Years of analisys
 
 #Para Tolima
-YStart    <- 2013 #Star Year for analisys
+YStart    <- 2007 #Star Year for analisys
 YEnd      <- 2015 #End  Year for analisys
 
                                   ########  ########  ######   #### ##    ## 
@@ -91,8 +91,9 @@ SUMMARY(dirFol,"RHUM",YStart,YEnd)
 
 #You can use DontUse vector for exclude positions of the stations that you don't will use
 #eg: DontUse=c(2,4,9)
-
-GENERATOR_T_R(dirFol,YStart,YEnd)#,DontUse = DontUse)
+YStart <- 2010
+YEnd   <- 2015
+GENERATOR_T_R(dirFol, YStart, YEnd, DontUse=2)
 #length(DontUse)
 #Relative humidity and Solar energy
 GEN_RHUM(dirFol)
