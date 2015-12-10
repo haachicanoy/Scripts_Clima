@@ -91,12 +91,13 @@ SUMMARY(dirFol,"RHUM",YStart,YEnd)
       #          RAIN_to contain the same stations before continue            #
       #########################################################################
 
-#You can use DontUse vector for exclude positions of the stations that you don't will use
-#eg: 
-DontUse=c(3,8,11,4,9,6,12)
+# You can use DontUse vector for exclude positions of the stations that you don't will use
+DontUse <- 2# c(3,8,11,4,9,6,12)
 
-GENERATOR_T_R(dirFol,YStart,YEnd,DontUse = DontUse)
-#length(DontUse)
+GENERATOR_T_R(dirFol, YStart, YEnd, DontUse=DontUse) # Replace internal function: ComprehensivePrecipitationGenerator by:
+# //dapadfs/workspace_cluster_6/TRANSVERSAL_PROJECTS/MADR/COMPONENTE_2/ASBAMA/DATOS_PROCESADOS/_clima\IDEAM\PROCESS/RMAWCORREGIDO.txt
+# //dapadfs/workspace_cluster_6/TRANSVERSAL_PROJECTS/MADR/COMPONENTE_2/CLIMA/QC_scripts_R/OldVersion/RMAWCORREGIDO.txt
+
 #Relative humidity and Solar energy
 GEN_RHUM(dirFol)
 GEN_ESOL(dirFol)
@@ -104,5 +105,4 @@ GEN_ESOL(dirFol)
 #Text files of ESOL and Final Graphics
 END_GRAPS(dirFol)
 
-##############END
-
+############## END
