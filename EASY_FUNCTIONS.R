@@ -23,14 +23,22 @@ library(ggplot2)
 library(RMAWGEN)
 library(utils)
 #Work directory
+<<<<<<< HEAD
 dirFol    <- "//dapadfs/workspace_cluster_6/TRANSVERSAL_PROJECTS/MADR/COMPONENTE_2/ASBAMA/DATOS_PROCESADOS/_clima/IDEAM"
+=======
+dirFol    <- "//dapadfs/workspace_cluster_6/TRANSVERSAL_PROJECTS/MADR/COMPONENTE_2/CLIMA/SERIES_CLIMA_PROCESADO/AntCorTol/"
+>>>>>>> refs/remotes/victor1130/master
 setwd(dirFol)
 
 GRAPHICS  <- function(){source(paste0(dirFol,"/GRAPHICS.R"))}
 #Years of analisys
 
 #Para Tolima
+<<<<<<< HEAD
 YStart    <- 2008 #Star Year for analisys
+=======
+YStart    <- 2011 #Star Year for analisys
+>>>>>>> refs/remotes/victor1130/master
 YEnd      <- 2015 #End  Year for analisys
 
                                   ########  ########  ######   #### ##    ## 
@@ -60,13 +68,14 @@ FOLDERS(dirFol)
 QCHORLY(dirFol)
 
 #Convert
-CONVERT(dirFol)
+CONVERT(dirFol)###Corregir
 
 #Mix: solo si se tienen datos horarios y diarios de una misma estacion
 MIX(dirFol)
 
 #Quality Control station daily
-QCDAILY(dirFol)
+QCDAILY(dirFol)###Corregir
+
 
 #Inputs
 INPUTS(dirFol)
@@ -90,10 +99,17 @@ SUMMARY(dirFol,"RHUM",YStart,YEnd)
       #########################################################################
 
 #You can use DontUse vector for exclude positions of the stations that you don't will use
+<<<<<<< HEAD
 #eg: DontUse=c(2,4,9)
 YStart <- 2008
 YEnd   <- 2015
 GENERATOR_T_R(dirFol, YStart, YEnd, DontUse=2)
+=======
+#eg: 
+DontUse=c(6,8,9,11)
+
+GENERATOR_T_R(dirFol,YStart,YEnd)#,DontUse = DontUse)
+>>>>>>> refs/remotes/victor1130/master
 #length(DontUse)
 #Relative humidity and Solar energy
 GEN_RHUM(dirFol)

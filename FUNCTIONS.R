@@ -31,7 +31,7 @@ QCHORLY <- function(dirFol){
   NumFiles=length(FilesNames)
   nom.files=substring(FilesNames,1,nchar(FilesNames)-4)
   
-  Data.all.files=lapply(paste0(Filesroutes,FilesNames),function(x){read.table(x,sep="\t",header=T,blank.lines.skip=TRUE)})
+  Data.all.files=lapply(paste0(Filesroutes,FilesNames),function(x){read.delim(x,sep="\t",header=F,col.names=c("Date", "Hour","Value"))})
   #Data.all.files=lapply(paste0(Filesroutes,FilesNames),function(x){print(x);return(read.table(x,sep="\t",header=T,blank.lines.skip=TRUE))})
   #read.table("//dapadfs/workspace_cluster_6/TRANSVERSAL_PROJECTS/MADR/COMPONENTE_2/CLIMA/SERIES_CLIMA_PROCESADO/Santander//SERIES_ORIGINAL/HOURLY/28025120_WAM2_ESOL.txt",sep="\t",header=T,blank.lines.skip=TRUE)
   names(Data.all.files)=nom.files
@@ -235,7 +235,7 @@ QCHORLY <- function(dirFol){
       resul1[[j]]=Tabla.fin
       nom.Summary[j]=nom.files[IND]
       #write.csv(Tabla.fin,paste0(Filesroutesdestino,nom.files[IND],"_Summary.csv"))
-      write.table(Data.all.files.OK[[IND]],paste0(Filesroutesdestino,nom.files[IND],"_QC1ready.txt"), sep="\t")
+      write.table(Data.all.files.OK[[IND]],paste0(Filesroutesdestino,nom.files[IND],"_QC1ready.txt"), sep="\t",row.names = F)
     }
   }
   
@@ -341,9 +341,9 @@ QCHORLY <- function(dirFol){
       
       if(modif==1){
         varCCM2=paste0(substring(nom.files[IND],first=1,nchar(nom.files[IND])-9),"CCM2_ESOL")
-        write.table(Data.all.files.OK[[IND]],paste0(Filesroutesdestino,varCCM2,"_QC1ready.txt"), sep="\t")
+        write.table(Data.all.files.OK[[IND]],paste0(Filesroutesdestino,varCCM2,"_QC1ready.txt"), sep="\t",row.names = F)
       }else{
-        write.table(Data.all.files.OK[[IND]],paste0(Filesroutesdestino,nom.files[IND],"_QC1ready.txt"), sep="\t")
+        write.table(Data.all.files.OK[[IND]],paste0(Filesroutesdestino,nom.files[IND],"_QC1ready.txt"), sep="\t",row.names = F)
       }
     }
   }
@@ -493,6 +493,13 @@ CONVERT <- function(dirFol){
       colnames(registros)=c("Date", "RegNumber")
       Fechas.rescat=merge(registros, medianas, by.x="Date", by.y="Date")
       Fechas.rescatOK=Fechas.rescat[which(Fechas.rescat$RegNumber>(0.8*minutos.dia/Fechas.rescat$Median)),]
+      
+      ###colocando
+      if(dim(Fechas.rescatOK)[1]< 1){
+        
+        print(paste0("The station ",nom.files[i]," has low or null information during the period of interest, therefore, it cannot be included into the following process"))
+        next
+      }
       
       # Calcular dato diario
       FechasOK.POS=which(!is.na(match(Data.in.time$Date, Fechas.rescatOK[[1]])))
@@ -840,6 +847,7 @@ QCDAILY <- function(dirFol){
   summary=Filter((Negate(is.null)), summary)
   
   summary2=(as.data.frame(do.call(cbind,summary)))
+  #length(summary2)
   print(paste0("The station: ",nom.files[SinDato],", do not have data for the period of interest."))
   colnames(summary2)=nom.files[-SinDato]; summary2=t(summary2)
   
@@ -847,8 +855,8 @@ QCDAILY <- function(dirFol){
   #Procedimiento siguiente que implica una comparacion entre dichas variables, de lo contrario el proceso falla
   #Discard tendra entonces los ID  que se deben quitar
   
-  Discard=nom.files[SinDato][grep("TMAX|TMIN",nom.files[SinDato])]
-  Discard=unique(substring(Discard,1,nchar(Discard)-5))#Extraer solo el ID
+  #Discard=nom.files[SinDato][grep("TMAX|TMIN",nom.files[SinDato])]
+  #Discard=unique(substring(Discard,1,nchar(Discard)-5))#Extraer solo el ID
   
   }else{
     summary2=(as.data.frame(do.call(cbind,summary)))
@@ -990,9 +998,12 @@ INPUTS <- function(dirFol){
   print("Wait a moment please...")
   
   rutOrigen=paste0(dirFol,"/PROCESS/03_SERIES_DAILY_With_Holes/")
+  #rutOrigen=paste0(dirFol,"/PROCESS/04_SERIES_DAILY_OK/")
   
   files <-list.files(rutOrigen,pattern="\\.txt$")
+  #files <-list.files(rutOrigen,pattern="\\_FUS.txt$")
   nom.files<-substring(files,1,nchar(files)-18)
+  #nom.files<-substring(files,1,nchar(files)-8)
   Datos <- lapply(paste0(rutOrigen,"/",files,sep=""),function(x){read.table(x,header=T,sep="\t")})
   names(Datos)=nom.files
   
